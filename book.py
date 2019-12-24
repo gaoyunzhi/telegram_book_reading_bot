@@ -46,11 +46,14 @@ def getInfo(desc):
 def sending():
 	desc = {}
 	for filename, book in books:
+		print(filename)
 		message_id = channel.send_message(filename).message_id
 		desc[filename] = message_id
+		print(filename, 'sent')
 		for sentence in book.split('\n')[:10]:
 			if not sentence.strip():
 				continue
+			print(sentence)
 			time.sleep(random.random() * 6)
 			retry(lambda: channel.send_message(sentence))
 		pin_id = channel.send_message(
