@@ -22,11 +22,11 @@ def retry(f):
 		f()
 	except Exception as e:
 		print(e)
-		time.sleep(random.random())
+		time.sleep(random.random() * 100)
 		retry(f)
 
 for filename, book in books:
 	channel.send_message(filename)
 	for sentence in book.split('\n\n'):
-		time.sleep(random.random() / 5)
+		time.sleep(random.random() * 6)
 		retry(lambda: channel.send_message(sentence))
