@@ -46,18 +46,19 @@ def getInfo(desc):
 def sending():
 	desc = {}
 	for filename, book in books:
-		print(filename)
-		message_id = channel.send_message(filename).message_id
-		desc[filename] = message_id
-		print(filename, 'sent')
-		for sentence in book.split('\n')[:10]:
-			if not sentence.strip():
-				continue
-			print(sentence)
-			time.sleep(random.random() * 6)
-			retry(lambda: channel.send_message(sentence))
-		pin_id = channel.send_message(
-			'电梯:\n' + getInfo(desc), parse_mode='Markdown', disable_web_page_preview=True).message_id
-		tele.bot.pin_chat_message(chat_id, pin_id)
+		try:
+			message_id = channel.send_message(filename).message_id
+			desc[filename] = message_id
+			for sentence in book.split('\n'):
+				if not sentence.strip():
+					continue
+				print(sentence)
+				time.sleep(random.random() * 6)
+				retry(lambda: channel.send_message(sentence))
+			pin_id = channel.send_message(
+				'电梯:\n' + getInfo(desc), parse_mode='Markdown', disable_web_page_preview=True).message_id
+			tele.bot.pin_chat_message(chat_id, pin_id)
+		except Exception as e:
+			print(e)
 
 sending()
