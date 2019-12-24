@@ -11,8 +11,7 @@ tele = Updater(CREDENTIALS['bot_token'], use_context=True)
 channel = tele.bot.get_chat(-1001435357912)
 
 books = []
-for filenames in glob.glob("books/*.txt"):
+for filename in glob.glob("books/*.txt"):
 	with open(filename) as f:
-		books.append(filename, f.read())
+		books.append((filename, f.read()))
 
- 
