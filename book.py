@@ -18,13 +18,15 @@ for filename in glob.glob("books/*.txt"):
 	with open(filename) as f:
 		books.append((filename, f.read()))
 
-def retry(f):
+def retry(f, number = 2):
+	if number < 0:
+		return
 	try:
 		f()
 	except Exception as e:
 		print(e)
 		time.sleep(random.random() * 100)
-		retry(f)
+		retry(f, number - 1)
 
 def getBookName(filename):
 	return filename[6:-4]
@@ -47,7 +49,7 @@ def sending():
 		message_id = channel.send_message(filename).message_id
 		desc[filename] = message_id
 		for sentence in book.split('\n')[:10]:
-			if not sentence:
+			if not sentence.strip():
 				continue
 			time.sleep(random.random() * 6)
 			retry(lambda: channel.send_message(sentence))
