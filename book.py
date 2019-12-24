@@ -20,11 +20,13 @@ for filename in glob.glob("books/*.txt"):
 def retry(f):
 	try:
 		f()
-	except:
+	except Exception as e:
+		print(e)
 		time.sleep(random.random())
 		retry(f)
 
 for filename, book in books:
 	channel.send_message(filename)
 	for sentence in book.split('\n\n'):
+		time.sleep(random.random() / 5)
 		retry(lambda: channel.send_message(sentence))
