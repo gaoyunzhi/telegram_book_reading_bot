@@ -4,6 +4,8 @@
 from telegram.ext import Updater
 import yaml
 import glob
+import time
+import random
 
 with open('CREDENTIALS') as f:
 	CREDENTIALS = yaml.load(f, Loader=yaml.FullLoader)
@@ -17,5 +19,6 @@ for filename in glob.glob("books/*.txt"):
 
 for filename, book in books:
 	channel.send_message(filename)
-	for sentence in books.split('\n\n'):
+	for sentence in book.split('\n\n'):
 		channel.send_message(sentence)
+		time.sleep(random.random() / 10)
