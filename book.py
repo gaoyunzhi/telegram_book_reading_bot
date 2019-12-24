@@ -39,23 +39,18 @@ def getInfo(desc):
 	for k, v in desc.items():
 		r.append(getNewInfo(k, v))
 	r.sort()
-	return '\n'.append(r)
+	return '\n'.join(r)
 
 def sending():
-	global channel
 	desc = {}
 	for filename, book in books:
 		message_id = channel.send_message(filename).message_id
 		desc[filename] = message_id
-		channel = tele.bot.get_chat(chat_id)
-		result = tele.bot.set_chat_description(chat_id, 
-			channel.description + '\n' + getNewInfo(filename, message_id), parse_mode='Markdown')
-		print(result)
-		for sentence in book.split('\n\n')[:5]: # testing
+		for sentence in book.split('\n\n'):
 			time.sleep(random.random() * 6)
 			retry(lambda: channel.send_message(sentence))
 		pin_id = channel.send_message(
-			'书籍电梯:\n\n' + getInfo(desc), parse_mode='Markdown', disable_web_page_preview=True).message_id
+			'电梯:\n' + getInfo(desc), parse_mode='Markdown', disable_web_page_preview=True).message_id
 		tele.bot.pin_chat_message(chat_id, pin_id)
 
 sending()
