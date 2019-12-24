@@ -17,8 +17,14 @@ for filename in glob.glob("books/*.txt"):
 	with open(filename) as f:
 		books.append((filename, f.read()))
 
+def retry(f):
+	try:
+		f()
+	except:
+		time.sleep(random.random())
+		retry(f)
+
 for filename, book in books:
 	channel.send_message(filename)
 	for sentence in book.split('\n\n'):
-		channel.send_message(sentence)
-		time.sleep(random.random() / 10)
+		retry(lambda: channel.send_message(sentence))
