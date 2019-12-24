@@ -15,3 +15,7 @@ for filename in glob.glob("books/*.txt"):
 	with open(filename) as f:
 		books.append((filename, f.read()))
 
+for filename, book in books:
+	channel.send_message(filename)
+	for sentence in books.split('\n\n'):
+		channel.send_message(sentence)
