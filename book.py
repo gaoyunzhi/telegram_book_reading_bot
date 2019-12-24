@@ -27,7 +27,7 @@ def retry(f):
 		retry(f)
 
 def getBookName(filename):
-	return fileanme[6:-4]
+	return filename[6:-4]
 
 def getNewInfo(filename, message_id):
 	book_name = getBookName(filename)
@@ -36,19 +36,21 @@ def getNewInfo(filename, message_id):
 
 def getInfo(desc):
 	r = []
-	for k, v in desc:
+	for k, v in desc.items():
 		r.append(getNewInfo(k, v))
 	r.sort()
 	return '\n'.append(r)
 
 def sending():
+	global channel
 	desc = {}
 	for filename, book in books:
 		message_id = channel.send_message(filename).message_id
 		desc[filename] = message_id
 		channel = tele.bot.get_chat(chat_id)
-		tele.bot.set_chat_description(chat_id, 
+		result = tele.bot.set_chat_description(chat_id, 
 			channel.description + '\n' + getNewInfo(filename, message_id), parse_mode='Markdown')
+		print(result)
 		for sentence in book.split('\n\n')[:5]: # testing
 			time.sleep(random.random() * 6)
 			retry(lambda: channel.send_message(sentence))
